@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VulnProof AppSec Consulting</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    html { scroll-behavior: smooth; }
+    :root {
+      --primary-color: #000000;
+      --secondary-color: #7B4DFF;
+      --bg-color: #FFFFFF;
+      --text-color: #000000;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    header {
+      background: var(--bg-color);
+      color: var(--primary-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      width: clamp(80px, 15vw, 150px);
+      height: auto;
+    }
+    nav a {
+      color: var(--primary-color);
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: #0a0a23; /* Solid dark background */
+      overflow: hidden;
+      min-height: 500px;
+    }
+    .hero canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.7; /* Slightly transparent to keep content readable */
+    }
+    .hero h2, .hero p, .btn {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--bg-color);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      color: var(--bg-color);
+    }
+    .btn {
+      background: var(--bg-color);
+      color: var(--secondary-color);
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      z-index: 1;
+    }
+    .btn:hover {
+      background: var(--secondary-color);
+      color: var(--bg-color);
+    }
+    section { padding: 3rem 2rem; }
+    #services h2, #contact h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--secondary-color);
+    }
+    .services {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .service-card {
+      background: var(--bg-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .service-icon {
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+    }
+    .service-card h3 {
+      margin-bottom: 1rem;
+      color: var(--secondary-color);
+    }
+    .service-card p {
+      font-size: 0.95rem;
+      color: var(--text-color);
+    }
+    footer {
+      background: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 1rem 2rem;
+    }
+    footer p { font-size: 0.9rem; }
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .modal {
+      background: var(--bg-color);
+      padding: 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .modal h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    .modal label {
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      font-weight: 500;
+    }
+    .modal input, .modal textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      font-family: inherit;
+    }
+    .modal button {
+      background: var(--secondary-color);
+      color: var(--bg-color);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    @media(max-width: 900px) {
+      .services { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media(max-width: 600px) {
+      .services { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="vulnpr.svg" alt="VulnProof Logo" class="logo" />
+    <nav>
+      <a href="#services">Services</a>
+    </nav>
+  </header>
+  <section class="hero">
+    <canvas id="particleCanvas"></canvas>
+    <h2>Secure Your Applications with Confidence</h2>
+    <p>At VulnProof, we specialize in strengthening your digital assets through comprehensive AppSec services—from code reviews to threat modeling.</p>
+    <a href="#" class="btn" id="openModalBtn">Get a Free Consultation</a>
+  </section>
+  <section id="services">
+    <h2>Our Services</h2>
+    <div class="services">
+      <div class="service-card">
+        <i class="fas fa-code service-icon"></i>
+        <h3>Secure Code Review</h3>
+        <p>In-depth analysis of your codebase to identify and remediate vulnerabilities before they become liabilities.</p>
+      </div>
+      <div class="service-card">
+        <i class="fas fa-bug service-icon"></i>
+        <h3>Vulnerability Assessment</h3>
+        <p>Automated and manual testing to uncover weaknesses in web and mobile applications.</p>
+      </div>
+      <div class="service-card">
+        <i class="fas fa-shield-alt service-icon"></i>
+        <h3>Threat Modeling</h3>
+        <p>Strategic evaluation of potential threats to your architecture, helping you stay one step ahead.</p>
+      </div>
+      <div class="service-card">
+        <i class="fas fa-chalkboard-teacher service-icon"></i>
+        <h3>Security Training</h3>
+        <p>Customized workshops and training sessions to empower your team with best practices.</p>
+      </div>
+      <div class="service-card">
+        <i class="fas fa-user-secret service-icon"></i>
+        <h3>Web & Mobile Penetration Testing</h3>
+        <p>Hands-on testing by ethical hackers to simulate real-world attacks on web and mobile platforms, validating your defenses.</p>
+      </div>
+      <div class="service-card">
+        <i class="fas fa-cogs service-icon"></i>
+        <h3>DevSecOps Integration</h3>
+        <p>Integrate security early in the development pipeline with automated checks and continuous monitoring.</p>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>© 2025 VulnProof AppSec Consulting. All rights reserved.</p>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3>Free Consultation</h3>
+      <p style="margin:1rem 0;">Please email us at <a href="mailto:info@vulnproof.io">info@vulnproof.io</a> for a free consultation.</p>
+      <button class="btn" onclick="overlay.style.display='none'">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const openBtn = document.getElementById('openModalBtn');
+    const overlay = document.getElementById('modalOverlay');
+    openBtn.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+    });
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    });
+
+    // Particle Network Effect for Hero Section
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    // Set canvas size
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+      initParticles();
+    }
+
+    // Particle class
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+      }
+
+      update() {
+        // Move particles continuously
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        // Bounce off edges
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+        // Repel from mouse
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            let force = (100 - distance) / 100;
+            // Push particles away from mouse
+            this.x -= (dx / distance) * force * 5;
+            this.y -= (dy / distance) * force * 5;
+          }
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        // Fade particles based on vertical position
+        let opacity = 1 - (this.y / canvas.height); // Fades to 0 at bottom
+        ctx.fillStyle = `rgba(167, 139, 250, ${opacity})`; // Lighter purple with dynamic opacity
+        ctx.fill();
+      }
+    }
+
+    // Initialize particles
+    function initParticles() {
+      particles = [];
+      const numParticles = Math.floor(canvas.width * canvas.height / 10000);
+      for (let i = 0; i < numParticles; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    // Connect particles
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            // Use average y-position to determine line opacity
+            let avgY = (particles[a].y + particles[b].y) / 2;
+            let opacity = 1 - (avgY / canvas.height); // Fades to 0 at bottom
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(167, 139, 250, ${opacity * (1 - distance / 100)})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // Animation loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    // Mouse interaction
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    // Initialize and start
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    animate();
+  </script>
+</body>
+</html>
